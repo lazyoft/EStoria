@@ -6,7 +6,7 @@ using EStoria.ValueObjects;
 
 namespace EStoria.Services.Persistence.FileSystem
 {
-	public class FileCommitPersistence : ICommitPersistence
+	public class FileCommitPersistence : IEventPersistence, ISnapshotPersistence
 	{
 		readonly string _basePath;
 		readonly IFileCommitStrategy _fileCommitStrategy;
