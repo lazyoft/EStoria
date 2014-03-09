@@ -34,10 +34,10 @@ namespace EStoria
 		{
 			Guard.NotNull(() => evt);
 
-			if(evt.Serial <= Serial || !Handlers.ContainsKey(evt.Event.GetType())) 
+			if(evt.Serial <= Serial || !Handlers.ContainsKey(evt.Data.GetType())) 
 				return;
-			var handler = Handlers[evt.Event.GetType()];
-			handler.GetType().GetMethod("Invoke").Invoke(handler, new[] { State, evt.Event });
+			var handler = Handlers[evt.Data.GetType()];
+			handler.GetType().GetMethod("Invoke").Invoke(handler, new[] { State, evt.Data });
 
 			Serial = evt.Serial;
 		}
