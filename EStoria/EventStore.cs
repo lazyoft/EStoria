@@ -8,19 +8,19 @@ namespace EStoria
 {
 	public class EventStore : IEventStore
 	{
-		readonly IEventRepository _repository;
+		readonly IEventPersistence _persistence;
 		readonly ISerialProvider _serialProvider;
 		readonly IClock _clock;
 		readonly ISerializer _serializer;
 
-		public EventStore(IEventRepository repository, ISerialProvider serialProvider, IClock clock, ISerializer serializer)
+		public EventStore(IEventPersistence persistence, ISerialProvider serialProvider, IClock clock, ISerializer serializer)
 		{			
-			Guard.NotNull(() => repository);
+			Guard.NotNull(() => persistence);
 			Guard.NotNull(() => serialProvider);
 			Guard.NotNull(() => clock);
 			Guard.NotNull(() => serializer);
 
-			_repository = repository;
+			_persistence = persistence;
 			_serialProvider = serialProvider;
 			_clock = clock;
 			_serializer = serializer;
@@ -37,7 +37,7 @@ namespace EStoria
 			{
 				var serial = _serialProvider.Next();
 				var savedEvent = new CommittedEvent(serial, streamName, _clock.Now(), @event);
-				_repository.Save(new EventInfo(serial, streamName), _serializer.Serialize(savedEvent));
+				_persistence.Save(new CommitInfo(serial, streamName), _serializer.Serialize(savedEvent));
 				result.Add(savedEvent);
 			}
 			return result;
@@ -50,9 +50,9 @@ namespace EStoria
 
 		public IEnumerable<CommittedEvent> Read(string streamName = null, int startWithSerial = 0)
 		{
-			return from info in _repository.GetInfos() 
-				   where (string.IsNullOrEmpty(streamName) || streamName == info.StreamName) && info.Serial >= startWithSerial 
-				   select _serializer.Deserialize<CommittedEvent>(_repository.Read(info));
+			return from info in _persistence.GetInfos() 
+				   where (string.IsNullOrEmpty(streamName) || streamName == info.Name) && info.Serial >= startWithSerial
+				   select _serializer.Deserialize<CommittedEvent>(_persistence.Read(info));
 		}
 	}
 }
