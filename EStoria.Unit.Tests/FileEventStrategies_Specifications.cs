@@ -1,5 +1,5 @@
 ﻿using System;
-using EStoria.Services.Repositories.FileSystem;
+using EStoria.Services.Persistence.FileSystem;
 using EStoria.ValueObjects;
 using FluentAssertions;
 using Machine.Specifications;

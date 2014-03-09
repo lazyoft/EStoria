@@ -1,8 +1,9 @@
 using System;
 using System.Linq;
+using EStoria.Interfaces;
 using EStoria.ValueObjects;
 
-namespace EStoria.Interfaces
+namespace EStoria
 {
 	public class SnapshotStore : ISnapshotStore
 	{

@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using EStoria.ValueObjects;
 
-namespace EStoria.Services.Repositories.FileSystem
+namespace EStoria.Services.Persistence.FileSystem
 {
 	public class FlatFolderFileCommitStrategy : IFileCommitStrategy
 	{

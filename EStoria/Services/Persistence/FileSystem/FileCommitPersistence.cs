@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using EStoria.Interfaces;
 using EStoria.ValueObjects;
 
-namespace EStoria.Services.Repositories.FileSystem
+namespace EStoria.Services.Persistence.FileSystem
 {
 	public class FileCommitPersistence : ICommitPersistence
 	{

@@ -1,7 +1,7 @@
 using System;
 using EStoria.ValueObjects;
 
-namespace EStoria.Services.Repositories.FileSystem
+namespace EStoria.Services.Persistence.FileSystem
 {
 	public interface IFileCommitStrategy
 	{

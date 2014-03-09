@@ -63,12 +63,12 @@
     <Compile Include="Interfaces\ISerialProvider.cs" />
     <Compile Include="EventModel.cs" />
     <Compile Include="Interfaces\ISnapshotStore.cs" />
-    <Compile Include="Interfaces\SnapshotStore.cs" />
+    <Compile Include="SnapshotStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EventStore.cs" />
-    <Compile Include="Services\Repositories\FileSystem\FileCommitPersistence.cs" />
-    <Compile Include="Services\Repositories\FileSystem\FlatFolderFileCommitStrategy.cs" />
-    <Compile Include="Services\Repositories\FileSystem\IFileCommitStrategy.cs" />
+    <Compile Include="Services\Persistence\FileSystem\FileCommitPersistence.cs" />
+    <Compile Include="Services\Persistence\FileSystem\FlatFolderFileCommitStrategy.cs" />
+    <Compile Include="Services\Persistence\FileSystem\IFileCommitStrategy.cs" />
     <Compile Include="Services\SerialProviders\ThreadSafeSerialProvider.cs" />
     <Compile Include="Services\Serializers\JsonSerializer.cs" />
     <Compile Include="Services\SystemClock.cs" />
