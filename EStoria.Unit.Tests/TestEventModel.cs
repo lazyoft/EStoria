@@ -12,7 +12,8 @@ namespace EStoria.Unit.Tests
 			Apply
 				.When<string>((model, s) => model.Text += s)
 				.When<int>((model, i) => model.Number += i)
-				.When<DateTime>((model, time) => model.Date = time);
+				.When<DateTime>((model, time) => model.Date = time)
+				.WhenUnknown((model, unknown) => model.Unknown = unknown);
 		}
 	}
 }

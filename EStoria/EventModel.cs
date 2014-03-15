@@ -8,10 +8,11 @@ namespace EStoria
 	{
 		public TState State { get; private set; }
 		public int Serial { get; private set; }
-		protected EventModelConfiguration Apply { get; private set; } 
+		protected IEventModelConfiguration Apply { get; private set; } 
 
 		readonly IDisposable _subscription;
 		readonly Dictionary<Type, object> Handlers;
+		Action<TState, object> UnknownHandler;
 		bool _disposed;
 		
 		protected EventModel(IObservable<CommittedEvent> events, TState snapshot = null, int serial = 0)
@@ -19,6 +20,7 @@ namespace EStoria
 			Guard.NotNull(() => events);
 
 			Handlers = new Dictionary<Type, object>();
+			UnknownHandler = (_, __) => { };
 			Apply = new EventModelConfiguration(this);
 			State = snapshot ?? new TState();
 			Serial = serial;
@@ -34,9 +36,10 @@ namespace EStoria
 		{
 			Guard.NotNull(() => evt);
 
-			if(evt.Serial <= Serial || !Handlers.ContainsKey(evt.Data.GetType())) 
+			if(evt.Serial <= Serial)
 				return;
-			var handler = Handlers[evt.Data.GetType()];
+
+			var handler = Handlers.ContainsKey(evt.Data.GetType()) ? Handlers[evt.Data.GetType()] : UnknownHandler;
 			handler.GetType().GetMethod("Invoke").Invoke(handler, new[] { State, evt.Data });
 
 			Serial = evt.Serial;
@@ -55,7 +58,13 @@ namespace EStoria
 			_disposed = true;
 		}
 
-		public sealed class EventModelConfiguration
+		public interface IEventModelConfiguration
+		{
+			IEventModelConfiguration When<T>(Action<TState, T> handler);
+			void WhenUnknown(Action<TState, object> unknownHandler);
+		}
+
+		sealed class EventModelConfiguration : IEventModelConfiguration
 		{
 			readonly EventModel<TState> _eventModel;
 
@@ -64,10 +73,19 @@ namespace EStoria
 				_eventModel = eventModel;
 			}
 
-			public EventModelConfiguration When<T>(Action<TState, T> handler)
+			public IEventModelConfiguration When<T>(Action<TState, T> handler)
 			{
+				Guard.NotNull(() => handler);
+
 				_eventModel.Handlers[typeof(T)] = handler;
 				return this;
+			}
+
+			public void WhenUnknown(Action<TState, object> unknownHandler)
+			{
+				Guard.NotNull(() => unknownHandler);
+
+				_eventModel.UnknownHandler += unknownHandler;
 			}
 		}
 	}

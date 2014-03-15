@@ -66,6 +66,15 @@ namespace EStoria.Unit.Tests
 		It should_update_its_serial_accordingly = () => Subject.Serial.Should().Be(3);
 	}
 
+	[Subject(typeof(EventModel<>))]
+	public class When_receiving_events_of_an_unknown_type: EmptyEventModelSetup
+	{
+		Because of = () => Events.OnNext(new CommittedEvent(1, "test", DateTime.Now, 3.14));
+
+		It should_apply_the_event_using_the_unknown_handler = () => Subject.State.Unknown.Should().Be(3.14);
+		It should_update_its_serial_accordingly = () => Subject.Serial.Should().Be(1);
+	}
+
 	public class SnapshotEventModelSetup
 	{
 		protected static ISubject<CommittedEvent> Events;
