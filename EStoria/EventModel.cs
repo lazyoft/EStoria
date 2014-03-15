@@ -12,6 +12,7 @@ namespace EStoria
 
 		readonly IDisposable _subscription;
 		readonly Dictionary<Type, object> Handlers;
+		Action<TState, object> UnknownHandler;
 		bool _disposed;
 		
 		protected EventModel(IObservable<CommittedEvent> events, TState snapshot = null, int serial = 0)
@@ -19,6 +20,7 @@ namespace EStoria
 			Guard.NotNull(() => events);
 
 			Handlers = new Dictionary<Type, object>();
+			UnknownHandler = (_, __) => { };
 			Apply = new EventModelConfiguration(this);
 			State = snapshot ?? new TState();
 			Serial = serial;
@@ -34,9 +36,10 @@ namespace EStoria
 		{
 			Guard.NotNull(() => evt);
 
-			if(evt.Serial <= Serial || !Handlers.ContainsKey(evt.Data.GetType())) 
+			if(evt.Serial <= Serial)
 				return;
-			var handler = Handlers[evt.Data.GetType()];
+
+			var handler = Handlers.ContainsKey(evt.Data.GetType()) ? Handlers[evt.Data.GetType()] : UnknownHandler;
 			handler.GetType().GetMethod("Invoke").Invoke(handler, new[] { State, evt.Data });
 
 			Serial = evt.Serial;
@@ -68,6 +71,13 @@ namespace EStoria
 			{
 				_eventModel.Handlers[typeof(T)] = handler;
 				return this;
+			}
+
+			public void WhenUnknown(Action<TState, object> unknownHandler)
+			{
+				Guard.NotNull(() => unknownHandler);
+
+				_eventModel.UnknownHandler += unknownHandler;
 			}
 		}
 	}
