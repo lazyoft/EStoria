@@ -69,6 +69,8 @@ namespace EStoria
 
 			public EventModelConfiguration When<T>(Action<TState, T> handler)
 			{
+				Guard.NotNull(() => handler);
+
 				_eventModel.Handlers[typeof(T)] = handler;
 				return this;
 			}
