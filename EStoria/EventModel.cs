@@ -8,7 +8,7 @@ namespace EStoria
 	{
 		public TState State { get; private set; }
 		public int Serial { get; private set; }
-		protected EventModelConfiguration Apply { get; private set; } 
+		protected IEventModelConfiguration Apply { get; private set; } 
 
 		readonly IDisposable _subscription;
 		readonly Dictionary<Type, object> Handlers;
@@ -58,7 +58,13 @@ namespace EStoria
 			_disposed = true;
 		}
 
-		public sealed class EventModelConfiguration
+		public interface IEventModelConfiguration
+		{
+			IEventModelConfiguration When<T>(Action<TState, T> handler);
+			void WhenUnknown(Action<TState, object> unknownHandler);
+		}
+
+		sealed class EventModelConfiguration : IEventModelConfiguration
 		{
 			readonly EventModel<TState> _eventModel;
 
@@ -67,7 +73,7 @@ namespace EStoria
 				_eventModel = eventModel;
 			}
 
-			public EventModelConfiguration When<T>(Action<TState, T> handler)
+			public IEventModelConfiguration When<T>(Action<TState, T> handler)
 			{
 				Guard.NotNull(() => handler);
 
