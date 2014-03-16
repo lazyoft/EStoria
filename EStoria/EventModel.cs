@@ -5,7 +5,7 @@ using EStoria.ValueObjects;
 
 namespace EStoria
 {
-	public abstract class EventModel<TModel> : BaseDisposable where TModel : class, new()
+	public abstract class EventModel<TModel> : BaseDisposable, IEventModel where TModel : class, new()
 	{
 		public TModel Model { get; private set; }
 		public int Serial { get; private set; }
