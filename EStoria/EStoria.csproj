@@ -62,6 +62,7 @@
     <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Interfaces\IEventStore.cs" />
     <Compile Include="Interfaces\ICommitPersistence.cs" />
+    <Compile Include="Interfaces\IHandlesCommand.cs" />
     <Compile Include="Interfaces\IMessageBus.cs" />
     <Compile Include="Interfaces\IPublisher.cs" />
     <Compile Include="Interfaces\ISerializer.cs" />
