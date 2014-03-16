@@ -2,7 +2,7 @@
 
 namespace EStoria.Interfaces
 {
-	public interface IAggregateLoader
+	public interface IModelLoader
 	{
 		T Load<T, TModel>(string id) where T : EventModel<TModel> where TModel : class, new();
 	}
