@@ -73,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandHandler_Specifications.cs" />
     <Compile Include="EventModel_Specifications.cs" />
     <Compile Include="EventStore_Specifications.cs" />
     <Compile Include="FileEventStrategies_Specifications.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SnapshotStore_Specifications.cs" />
     <Compile Include="SystemClock_Specifications.cs" />
+    <Compile Include="TestCommandHandler.cs" />
     <Compile Include="TestEventModel.cs" />
     <Compile Include="TestModel.cs" />
   </ItemGroup>
