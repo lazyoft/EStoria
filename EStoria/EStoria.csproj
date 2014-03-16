@@ -55,6 +55,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IEventModel.cs" />
+    <Compile Include="ModelLoader.cs" />
     <Compile Include="BaseDisposable.cs" />
     <Compile Include="Interfaces\IDomainEvent.cs" />
     <Compile Include="Services\MessageBus.cs" />
