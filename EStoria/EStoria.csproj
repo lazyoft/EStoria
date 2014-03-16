@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseDisposable.cs" />
     <Compile Include="Interfaces\IDomainEvent.cs" />
     <Compile Include="ValueObjects\CommandFailure.cs" />
     <Compile Include="Guard.cs" />
