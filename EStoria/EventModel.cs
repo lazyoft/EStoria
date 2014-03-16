@@ -1,36 +1,31 @@
 using System;
 using System.Collections.Generic;
+using EStoria.Interfaces;
 using EStoria.ValueObjects;
 
 namespace EStoria
 {
-	public abstract class EventModel<TState> : IDisposable where TState : class, new()
+	public abstract class EventModel<TModel> : BaseDisposable where TModel : class, new()
 	{
-		public TState State { get; private set; }
+		public TModel Model { get; private set; }
 		public int Serial { get; private set; }
-		protected IEventModelConfiguration Apply { get; private set; } 
 
+		protected IEventHandlingConfiguration<TModel> ConfigureEvents { get; private set; }
 		readonly IDisposable _subscription;
-		readonly Dictionary<Type, object> Handlers;
-		Action<TState, object> UnknownHandler;
-		bool _disposed;
-		
-		protected EventModel(IObservable<CommittedEvent> events, TState snapshot = null, int serial = 0)
+		internal readonly Dictionary<Type, object> Handlers;
+		internal Action<TModel, object> UnknownHandler;
+
+		protected EventModel(IObservable<CommittedEvent> events, TModel modelSnapshot = null, int serial = 0)
 		{
 			Guard.NotNull(() => events);
 
 			Handlers = new Dictionary<Type, object>();
 			UnknownHandler = (_, __) => { };
-			Apply = new EventModelConfiguration(this);
-			State = snapshot ?? new TState();
+			Model = modelSnapshot ?? new TModel();
 			Serial = serial;
-
-			// ReSharper disable once DoNotCallOverridableMethodsInConstructor
-			Configure();
 			_subscription = events.Subscribe(ApplyEvent);
+			ConfigureEvents = new EventHandlingConfiguration<TModel>(this);
 		}
-
-		protected abstract void Configure();
 
 		void ApplyEvent(CommittedEvent evt)
 		{
@@ -40,53 +35,16 @@ namespace EStoria
 				return;
 
 			var handler = Handlers.ContainsKey(evt.Data.GetType()) ? Handlers[evt.Data.GetType()] : UnknownHandler;
-			handler.GetType().GetMethod("Invoke").Invoke(handler, new[] { State, evt.Data });
+			handler.GetType().GetMethod("Invoke").Invoke(handler, new[] { Model, evt.Data });
 
 			Serial = evt.Serial;
 		}
 
-		public void Dispose()
+		protected override void Dispose(bool disposing)
 		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!_disposed && disposing)
+			if(!Disposed && disposing)
 				_subscription.Dispose();
-			_disposed = true;
-		}
-
-		public interface IEventModelConfiguration
-		{
-			IEventModelConfiguration When<T>(Action<TState, T> handler);
-			void WhenUnknown(Action<TState, object> unknownHandler);
-		}
-
-		sealed class EventModelConfiguration : IEventModelConfiguration
-		{
-			readonly EventModel<TState> _eventModel;
-
-			public EventModelConfiguration(EventModel<TState> eventModel)
-			{
-				_eventModel = eventModel;
-			}
-
-			public IEventModelConfiguration When<T>(Action<TState, T> handler)
-			{
-				Guard.NotNull(() => handler);
-
-				_eventModel.Handlers[typeof(T)] = handler;
-				return this;
-			}
-
-			public void WhenUnknown(Action<TState, object> unknownHandler)
-			{
-				Guard.NotNull(() => unknownHandler);
-
-				_eventModel.UnknownHandler += unknownHandler;
-			}
+			base.Dispose(disposing);
 		}
 	}
 }

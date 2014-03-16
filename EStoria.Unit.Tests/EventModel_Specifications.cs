@@ -31,9 +31,9 @@ namespace EStoria.Unit.Tests
 
 		It should_apply_the_events_to_the_state = () =>
 		{
-			Subject.State.Text.Should().Be("text");
-			Subject.State.Number.Should().Be(42);
-			Subject.State.Date.Should().Be(new DateTime(1971, 11, 26, 12, 30, 00));
+			Subject.Model.Text.Should().Be("text");
+			Subject.Model.Number.Should().Be(42);
+			Subject.Model.Date.Should().Be(new DateTime(1971, 11, 26, 12, 30, 00));
 		};
 		It should_update_its_serial_accordingly = () => Subject.Serial.Should().Be(4);
 	}
@@ -48,7 +48,7 @@ namespace EStoria.Unit.Tests
 			Events.OnNext(new CommittedEvent(1, "test", DateTime.Now, 20));
 		};
 
-		It should_ignore_the_duplicated_events_and_apply_the_event_just_once = () => Subject.State.Number.Should().Be(20);
+		It should_ignore_the_duplicated_events_and_apply_the_event_just_once = () => Subject.Model.Number.Should().Be(20);
 		It should_update_its_serial_accordingly = () => Subject.Serial.Should().Be(1);
 	}
 
@@ -62,7 +62,7 @@ namespace EStoria.Unit.Tests
 			Events.OnNext(new CommittedEvent(1, "test", DateTime.Now, 20));
 		};
 
-		It should_ignore_the_out_of_order_events_and_apply_only_the_events_in_sequence = () => Subject.State.Number.Should().Be(42);
+		It should_ignore_the_out_of_order_events_and_apply_only_the_events_in_sequence = () => Subject.Model.Number.Should().Be(42);
 		It should_update_its_serial_accordingly = () => Subject.Serial.Should().Be(3);
 	}
 
@@ -71,7 +71,7 @@ namespace EStoria.Unit.Tests
 	{
 		Because of = () => Events.OnNext(new CommittedEvent(1, "test", DateTime.Now, 3.14));
 
-		It should_apply_the_event_using_the_unknown_handler = () => Subject.State.Unknown.Should().Be(3.14);
+		It should_apply_the_event_using_the_unknown_handler = () => Subject.Model.Unknown.Should().Be(3.14);
 		It should_update_its_serial_accordingly = () => Subject.Serial.Should().Be(1);
 	}
 
@@ -96,7 +96,7 @@ namespace EStoria.Unit.Tests
 			Events.OnNext(new CommittedEvent(10, "test", DateTime.Now, 22));
 		};
 
-		It should_ignore_the_events = () => Subject.State.Number.Should().Be(42);
+		It should_ignore_the_events = () => Subject.Model.Number.Should().Be(42);
 		It should_not_update_its_serial = () => Subject.Serial.Should().Be(10);
 	}
 
@@ -109,7 +109,7 @@ namespace EStoria.Unit.Tests
 			Events.OnNext(new CommittedEvent(12, "test", DateTime.Now, 22));
 		};
 
-		It should_apply_the_events = () => Subject.State.Number.Should().Be(84);
+		It should_apply_the_events = () => Subject.Model.Number.Should().Be(84);
 		It should_update_its_serial_accordingly = () => Subject.Serial.Should().Be(12);
 	}
 
