@@ -5,11 +5,10 @@ namespace EStoria.Unit.Tests
 {
 	public class TestEventModel : EventModel<TestModel>
 	{
-		public TestEventModel(IObservable<CommittedEvent> events, TestModel snapshot = null, int serial = 0) : base(events, snapshot, serial) {}
-
-		protected override void Configure()
+		public TestEventModel(IObservable<CommittedEvent> events, TestModel modelSnapshot = null, int serial = 0)
+			: base(events, modelSnapshot, serial)
 		{
-			Apply
+			ConfigureEvents
 				.When<string>((model, s) => model.Text += s)
 				.When<int>((model, i) => model.Number += i)
 				.When<DateTime>((model, time) => model.Date = time)

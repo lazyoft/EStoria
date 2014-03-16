@@ -12,9 +12,6 @@ namespace EStoria
 
 		protected IEventHandlingConfiguration<TModel> ConfigureEvents { get; private set; }
 		readonly IDisposable _subscription;
-		bool _disposed;
-		
-		protected EventModel(IObservable<CommittedEvent> events, TState snapshot = null, int serial = 0)
 		internal readonly Dictionary<Type, object> Handlers;
 		internal Action<TModel, object> UnknownHandler;
 
@@ -26,13 +23,9 @@ namespace EStoria
 			UnknownHandler = (_, __) => { };
 			Model = modelSnapshot ?? new TModel();
 			Serial = serial;
-
-			// ReSharper disable once DoNotCallOverridableMethodsInConstructor
-			Configure();
 			_subscription = events.Subscribe(ApplyEvent);
+			ConfigureEvents = new EventHandlingConfiguration<TModel>(this);
 		}
-
-		protected abstract void Configure();
 
 		void ApplyEvent(CommittedEvent evt)
 		{
