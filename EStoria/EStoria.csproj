@@ -58,6 +58,7 @@
     <Compile Include="Interfaces\IDomainEvent.cs" />
     <Compile Include="ValueObjects\CommandFailure.cs" />
     <Compile Include="Guard.cs" />
+    <Compile Include="Interfaces\ICommandHandler.cs" />
     <Compile Include="Interfaces\IClock.cs" />
     <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Interfaces\IEventStore.cs" />
