@@ -32,13 +32,11 @@ namespace EStoria
 
 		public void OnError(Exception error)
 		{
-			_failures.OnError(error);
 			_eventsSubject.OnError(error);
 		}
 
 		public void OnCompleted()
 		{
-			_failures.OnCompleted();
 			_eventsSubject.OnCompleted();
 		}
 
