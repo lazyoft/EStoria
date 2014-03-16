@@ -4,25 +4,26 @@ using EStoria.ValueObjects;
 
 namespace EStoria
 {
-	public abstract class EventModel<TState> : IDisposable where TState : class, new()
+	public abstract class EventModel<TModel> : BaseDisposable where TModel : class, new()
 	{
-		public TState State { get; private set; }
+		public TModel Model { get; private set; }
 		public int Serial { get; private set; }
 		protected IEventModelConfiguration Apply { get; private set; } 
 
 		readonly IDisposable _subscription;
 		readonly Dictionary<Type, object> Handlers;
-		Action<TState, object> UnknownHandler;
 		bool _disposed;
 		
 		protected EventModel(IObservable<CommittedEvent> events, TState snapshot = null, int serial = 0)
+		internal Action<TModel, object> UnknownHandler;
+		protected EventModel(IObservable<CommittedEvent> events, TModel modelSnapshot = null, int serial = 0)
 		{
 			Guard.NotNull(() => events);
 
 			Handlers = new Dictionary<Type, object>();
 			UnknownHandler = (_, __) => { };
 			Apply = new EventModelConfiguration(this);
-			State = snapshot ?? new TState();
+			Model = modelSnapshot ?? new TModel();
 			Serial = serial;
 
 			// ReSharper disable once DoNotCallOverridableMethodsInConstructor
@@ -40,23 +41,15 @@ namespace EStoria
 				return;
 
 			var handler = Handlers.ContainsKey(evt.Data.GetType()) ? Handlers[evt.Data.GetType()] : UnknownHandler;
-			handler.GetType().GetMethod("Invoke").Invoke(handler, new[] { State, evt.Data });
+			handler.GetType().GetMethod("Invoke").Invoke(handler, new[] { Model, evt.Data });
 
 			Serial = evt.Serial;
 		}
 
-		public void Dispose()
+		protected override void Dispose(bool disposing)
 		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!_disposed && disposing)
+			if(!Disposed && disposing)
 				_subscription.Dispose();
-			_disposed = true;
-		}
 
 		public interface IEventModelConfiguration
 		{
@@ -87,6 +80,7 @@ namespace EStoria
 
 				_eventModel.UnknownHandler += unknownHandler;
 			}
+			base.Dispose(disposing);
 		}
 	}
 }
