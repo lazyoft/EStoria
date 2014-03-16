@@ -78,6 +78,7 @@
     <Compile Include="EventStore_Specifications.cs" />
     <Compile Include="FileEventStrategies_Specifications.cs" />
     <Compile Include="MessageBus_Specifications.cs" />
+    <Compile Include="ModelLoader_Specifications.cs" />
     <Compile Include="SerialProviders_Specifications.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SnapshotStore_Specifications.cs" />

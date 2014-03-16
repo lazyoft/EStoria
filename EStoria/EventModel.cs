@@ -5,15 +5,16 @@ using EStoria.ValueObjects;
 
 namespace EStoria
 {
-	public abstract class EventModel<TModel> : BaseDisposable where TModel : class, new()
+	public abstract class EventModel<TModel> : BaseDisposable, IEventModel where TModel : class, new()
 	{
 		public TModel Model { get; private set; }
 		public int Serial { get; private set; }
 
-		protected IEventHandlingConfiguration<TModel> ConfigureEvents { get; private set; }
-		readonly IDisposable _subscription;
 		internal readonly Dictionary<Type, object> Handlers;
 		internal Action<TModel, object> UnknownHandler;
+
+		readonly IObservable<CommittedEvent> _events;
+		IDisposable _subscription;
 
 		protected EventModel(IObservable<CommittedEvent> events, TModel modelSnapshot = null, int serial = 0)
 		{
@@ -23,8 +24,21 @@ namespace EStoria
 			UnknownHandler = (_, __) => { };
 			Model = modelSnapshot ?? new TModel();
 			Serial = serial;
-			_subscription = events.Subscribe(ApplyEvent);
-			ConfigureEvents = new EventHandlingConfiguration<TModel>(this);
+			_events = events;
+		}
+
+		public void HandleEvents(Action<IEventHandlingConfiguration<TModel>> eventStream)
+		{
+			Guard.NotNull(() => eventStream);
+
+			eventStream(new EventHandlingConfiguration<TModel>(this));
+			Start();
+		}
+
+		void Start()
+		{
+			if(_subscription == null)
+				_subscription = _events.Subscribe(ApplyEvent);
 		}
 
 		void ApplyEvent(CommittedEvent evt)
