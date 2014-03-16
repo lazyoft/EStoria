@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EStoria.Services;
 using FluentAssertions;
 using Machine.Fakes;
 using Machine.Specifications;

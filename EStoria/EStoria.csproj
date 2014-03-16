@@ -75,6 +75,7 @@
     <Compile Include="Interfaces\ISerialProvider.cs" />
     <Compile Include="EventModel.cs" />
     <Compile Include="Interfaces\ISnapshotStore.cs" />
+    <Compile Include="MessageBus.cs" />
     <Compile Include="SnapshotStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EventStore.cs" />

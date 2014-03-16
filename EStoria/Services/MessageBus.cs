@@ -5,7 +5,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using EStoria.Interfaces;
 
-namespace EStoria
+namespace EStoria.Services
 {
 	public class MessageBus : IMessageBus
 	{
