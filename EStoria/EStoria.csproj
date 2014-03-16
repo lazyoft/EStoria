@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ValueObjects\CommandFailure.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Interfaces\IClock.cs" />
     <Compile Include="Interfaces\IEventStore.cs" />
