@@ -68,5 +68,20 @@ namespace EStoria
 			}
 			base.Dispose(disposing);
 		}
+
+		protected internal interface IDomainEventBuilder
+		{
+			DomainEvent A(object @event);
+		}
+
+		protected IDomainEventBuilder For(string id)
+		{
+			return new DomainEventBuilder(id);
+		}
+
+		protected DomainEvent A(object @event)
+		{
+			return new DomainEvent { AggregateId = string.Empty, Event = @event };
+		}
 	}
 }
