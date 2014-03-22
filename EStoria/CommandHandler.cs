@@ -11,13 +11,9 @@ namespace EStoria
 	{
 		readonly Subject<DomainEvent> _eventsSubject;
 		readonly Subject<CommandFailure> _failures;
-		protected IModelLoader Loader { get; private set; } 
 
-		protected CommandHandler(IModelLoader loader)
+		protected CommandHandler()
 		{
-			Guard.NotNull(() => loader);
-
-			Loader = loader;
 			_eventsSubject = new Subject<DomainEvent>();
 			_failures = new Subject<CommandFailure>();
 		}

@@ -8,8 +8,6 @@ namespace EStoria.Unit.Tests
 	{
 		public bool DefaultCalled;
 
-		public TestCommandHandler(IModelLoader loader) : base(loader) {}
-
 		public override IEnumerable<DomainEvent> Apply(ICommand command)
 		{
 			DefaultCalled = true;
