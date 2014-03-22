@@ -10,7 +10,7 @@ namespace EStoria
 		readonly Subject<CommittedEvent> _committedEvents;
 		readonly IDisposable _subscription;
 
-		public DomainEventSaver(IObservable<IDomainEvent> domainEvents, IEventStore eventStore)
+		public DomainEventSaver(IObservable<DomainEvent> domainEvents, IEventStore eventStore)
 		{
 			_committedEvents = new Subject<CommittedEvent>();
 			_subscription = domainEvents.Subscribe(evt =>
@@ -18,7 +18,7 @@ namespace EStoria
 				var commit = default(CommittedEvent);
 				try
 				{
-					commit = eventStore.Append(evt.AggregateId, evt);
+					commit = eventStore.Append(evt.AggregateId, evt.Event);
 				}
 				catch(Exception ex)
 				{

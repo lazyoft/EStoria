@@ -59,7 +59,7 @@
     <Compile Include="IEventModel.cs" />
     <Compile Include="ModelLoader.cs" />
     <Compile Include="BaseDisposable.cs" />
-    <Compile Include="Interfaces\IDomainEvent.cs" />
+    <Compile Include="Interfaces\DomainEvent.cs" />
     <Compile Include="Services\MessageBus.cs" />
     <Compile Include="ValueObjects\CommandFailure.cs" />
     <Compile Include="CommandHandler.cs" />
