@@ -9,16 +9,12 @@ namespace EStoria
 {
 	public abstract class CommandHandler : BaseDisposable, ICommandHandler
 	{
-		readonly Subject<IDomainEvent> _eventsSubject;
+		readonly Subject<DomainEvent> _eventsSubject;
 		readonly Subject<CommandFailure> _failures;
-		protected IModelLoader Loader { get; private set; } 
 
-		protected CommandHandler(IModelLoader loader)
+		protected CommandHandler()
 		{
-			Guard.NotNull(() => loader);
-
-			Loader = loader;
-			_eventsSubject = new Subject<IDomainEvent>();
+			_eventsSubject = new Subject<DomainEvent>();
 			_failures = new Subject<CommandFailure>();
 		}
 
@@ -26,7 +22,7 @@ namespace EStoria
 		{
 			Guard.NotNull(() => command);
 
-			var events = (IEnumerable<IDomainEvent>)((dynamic)this).Apply((dynamic)command);
+			var events = (IEnumerable<DomainEvent>)((dynamic)this).Apply((dynamic)command);
 			events.ToObservable().Subscribe(_eventsSubject.OnNext);
 		}
 
@@ -40,7 +36,7 @@ namespace EStoria
 			_eventsSubject.OnCompleted();
 		}
 
-		public IDisposable Subscribe(IObserver<IDomainEvent> observer)
+		public IDisposable Subscribe(IObserver<DomainEvent> observer)
 		{
 			return _eventsSubject.Subscribe(observer);
 		}
@@ -50,12 +46,12 @@ namespace EStoria
 			return _failures.Subscribe(observer);
 		}
 
-		public virtual IEnumerable<IDomainEvent> Apply(ICommand command)
+		public virtual IEnumerable<DomainEvent> Apply(ICommand command)
 		{
 			yield break;
 		}
 
-		protected IEnumerable<IDomainEvent> FailCommand(ICommand command, string reason)
+		protected IEnumerable<DomainEvent> FailCommand(ICommand command, string reason)
 		{
 			_failures.OnNext(new CommandFailure(command, reason));
 			yield break;
@@ -71,6 +67,21 @@ namespace EStoria
 				_eventsSubject.Dispose();
 			}
 			base.Dispose(disposing);
+		}
+
+		protected internal interface IDomainEventBuilder
+		{
+			DomainEvent A(object @event);
+		}
+
+		protected IDomainEventBuilder For(string id)
+		{
+			return new DomainEventBuilder(id);
+		}
+
+		protected DomainEvent A(object @event)
+		{
+			return new DomainEvent { AggregateId = string.Empty, Event = @event };
 		}
 	}
 }

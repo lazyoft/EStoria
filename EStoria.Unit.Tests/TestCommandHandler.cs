@@ -8,32 +8,29 @@ namespace EStoria.Unit.Tests
 	{
 		public bool DefaultCalled;
 
-		public TestCommandHandler(IModelLoader loader) : base(loader) {}
-
-		public override IEnumerable<IDomainEvent> Apply(ICommand command)
+		public override IEnumerable<DomainEvent> Apply(ICommand command)
 		{
 			DefaultCalled = true;
 			return base.Apply(command);
 		}
 
-		public IEnumerable<IDomainEvent> Apply(TestCommand1 command)
+		public IEnumerable<DomainEvent> Apply(TestCommand1 command)
 		{
-			yield return new TestDomainEvent { Value = "Event-" + command.Value };
+			yield return new DomainEvent { Event = "Event-" + command.Value };
 		}
 
-		public IEnumerable<IDomainEvent> Apply(TestCommand2 command)
+		public IEnumerable<DomainEvent> Apply(TestCommand2 command)
 		{
-			yield return new TestDomainEvent { Value = "Event1-" + command.Value };
-			yield return new TestDomainEvent { Value = "Event2-" + command.Value };				
+			yield return new DomainEvent { Event = "Event1-" + command.Value };
+			yield return new DomainEvent { Event = "Event2-" + command.Value };				
 		}
 
-		public IEnumerable<IDomainEvent> Apply(FailingCommand command)
+		public IEnumerable<DomainEvent> Apply(FailingCommand command)
 		{
 			return FailCommand(command, "Some reason");
 		}
 	}
 
-	public class TestDomainEvent : IDomainEvent { public string Value { get; set; } public string AggregateId { get; set; } }
 	public class TestCommand1 : ICommand { public string Value { get; set; } }
 	public class UnknownCommand : ICommand { public string Value { get; set; } }
 	public class FailingCommand : ICommand { }

@@ -11,7 +11,7 @@ namespace EStoria.Unit.Tests
 {
 	public class CommandHandlerSetup : WithSubject<TestCommandHandler>
 	{
-		protected static IList<IDomainEvent> Events;
+		protected static IList<DomainEvent> Events;
 		protected static IEnumerable<string> EventValues;
 		protected static CommandFailure Failure;
 		protected static Exception Error;
@@ -19,12 +19,11 @@ namespace EStoria.Unit.Tests
 
 		Establish context = () =>
 		{
-			Events = new List<IDomainEvent>();
-			EventValues = Events.Cast<TestDomainEvent>().Select(evt => evt.Value);
-			Subject.Subscribe<IDomainEvent>(evt => Events.Add(evt), e => Error = e, () => Completed = true);
+			Events = new List<DomainEvent>();
+			EventValues = Events.Select(evt => evt.Event).Cast<string>();
+			Subject.Subscribe<DomainEvent>(evt => Events.Add(evt), e => Error = e, () => Completed = true);
 			Subject.Subscribe<CommandFailure>(failure => Failure = failure);
 		};
-
 	}
 
 	[Subject(typeof(CommandHandler))]
