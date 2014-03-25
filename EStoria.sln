@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EStoria.Unit.Tests", "EStor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EStoria.Sample", "EStoria.Sample\EStoria.Sample.csproj", "{B5893A65-8E01-4AB6-98C4-64D26EB53ABF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EStoria.Sample.Unit.Tests", "EStoria.Sample.Unit.Tests\EStoria.Sample.Unit.Tests.csproj", "{5FA303BC-CC34-4F57-9997-949DBAA913C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{B5893A65-8E01-4AB6-98C4-64D26EB53ABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5893A65-8E01-4AB6-98C4-64D26EB53ABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5893A65-8E01-4AB6-98C4-64D26EB53ABF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FA303BC-CC34-4F57-9997-949DBAA913C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FA303BC-CC34-4F57-9997-949DBAA913C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FA303BC-CC34-4F57-9997-949DBAA913C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FA303BC-CC34-4F57-9997-949DBAA913C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
