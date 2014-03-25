@@ -51,10 +51,9 @@ namespace EStoria
 			yield break;
 		}
 
-		protected IEnumerable<DomainEvent> FailCommand(ICommand command, string reason)
+		protected void FailCommand(ICommand command, string reason)
 		{
 			_failures.OnNext(new CommandFailure(command, reason));
-			yield break;
 		}
 
 		protected override void Dispose(bool disposing)

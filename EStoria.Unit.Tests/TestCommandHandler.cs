@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EStoria.Interfaces;
+using EStoria.ValueObjects;
 
 namespace EStoria.Unit.Tests
 {
@@ -27,7 +28,8 @@ namespace EStoria.Unit.Tests
 
 		public IEnumerable<DomainEvent> Apply(FailingCommand command)
 		{
-			return FailCommand(command, "Some reason");
+			FailCommand(command, "Some reason");
+			yield break;
 		}
 	}
 
