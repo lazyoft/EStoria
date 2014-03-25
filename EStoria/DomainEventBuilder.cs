@@ -1,5 +1,5 @@
 ﻿using System;
-using EStoria.Interfaces;
+using EStoria.ValueObjects;
 
 namespace EStoria
 {
