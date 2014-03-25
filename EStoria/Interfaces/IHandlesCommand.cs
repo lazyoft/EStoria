@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EStoria.ValueObjects;
 
 namespace EStoria.Interfaces
 {

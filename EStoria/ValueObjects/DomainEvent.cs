@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EStoria.Interfaces
+namespace EStoria.ValueObjects
 {
 	public class DomainEvent
 	{
