@@ -49,6 +49,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Readmodels\ChannelStatistics.cs" />
     <Compile Include="Readmodels\Statistics.cs" />
+    <Compile Include="Projections\ChannelStatisticsProjection.cs" />
+    <Compile Include="Projections\ScheduleByChannelProjection.cs" />
+    <Compile Include="Projections\ScheduleByDayProjection.cs" />
     <Compile Include="Readmodels\ScheduleBase.cs" />
     <Compile Include="Readmodels\ScheduleByChannel.cs" />
     <Compile Include="Readmodels\ScheduleByDay.cs" />
