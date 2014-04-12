@@ -27,7 +27,7 @@ namespace EStoria
 			Guard.NotNullOrWhiteSpace(() => id);
 
 			var snapshot = _snapshotStore.Read(id);
-			return (T)Activator.CreateInstance(typeof(T), _events.StartWith(_eventStore.Read(id, snapshot.Serial)), snapshot.Data, snapshot.Serial);
+			return (T)Activator.CreateInstance(typeof(T), _events.StartWith(_eventStore.Read(null, snapshot.Serial)), snapshot.Data, snapshot.Serial);
 		}
 	}
 }

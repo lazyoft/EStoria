@@ -41,7 +41,7 @@ namespace EStoria
 				orderby info.Serial descending
 				select info).FirstOrDefault();
 
-			return snapshotInfo == null ? null : _serializer.Deserialize<CommittedSnapshot>(_persistence.Read(snapshotInfo));
+			return snapshotInfo == null ? new CommittedSnapshot(0, snapshotName, _clock.Now(), null) : _serializer.Deserialize<CommittedSnapshot>(_persistence.Read(snapshotInfo));
 		}
 	}
 }
