@@ -41,7 +41,7 @@ namespace EStoria.Sample
 					FailCommand(command, "Transmission has an overlap");
 					yield break;
 				}
-				yield return A(new TransmissionScheduled
+				yield return For("channels").A(new TransmissionScheduled
 				{
 					ChannelId = command.ChannelId,
 					TransmissionId = command.TransmissionId,
@@ -58,15 +58,15 @@ namespace EStoria.Sample
 					yield break;
 				}
 				if (transmission.ChannelId != command.ChannelId)
-					yield return A(new TransmissionMoved { TransmissionId = transmission.Id, FromChannelId = transmission.ChannelId, ToChannelId = command.ChannelId });
+					yield return For("channels").A(new TransmissionMoved { TransmissionId = transmission.Id, FromChannelId = transmission.ChannelId, ToChannelId = command.ChannelId });
 				if (command.Start < transmission.From)
-					yield return A(new TransmissionBroughtForward { TransmissionId = transmission.Id, NewStart = command.Start });
+					yield return For("channels").A(new TransmissionBroughtForward { TransmissionId = transmission.Id, NewStart = command.Start });
 				if (command.Start > transmission.From)
-					yield return A(new TransmissionPostponed { TransmissionId = transmission.Id, NewStart = command.Start });
+					yield return For("channels").A(new TransmissionPostponed { TransmissionId = transmission.Id, NewStart = command.Start });
 				if (command.Duration < transmission.To - transmission.From)
-					yield return A(new TransmissionShortened { TransmissionId = transmission.Id, Duration = command.Duration });
+					yield return For("channels").A(new TransmissionShortened { TransmissionId = transmission.Id, Duration = command.Duration });
 				if (command.Duration > transmission.To - transmission.From)
-					yield return A(new TransmissionExtended { TransmissionId = transmission.Id, NewDuration = command.Duration });				
+					yield return For("channels").A(new TransmissionExtended { TransmissionId = transmission.Id, NewDuration = command.Duration });				
 			}
 		}
 
@@ -85,7 +85,7 @@ namespace EStoria.Sample
 				yield break;
 			}
 
-			yield return A(new TransmissionCanceled { TransmissionId = command.TransmissionId });
+			yield return For("channels").A(new TransmissionCanceled { TransmissionId = command.TransmissionId });
 		}
 
 		public IEnumerable<DomainEvent> Apply(DeleteTransmission command)
@@ -96,7 +96,7 @@ namespace EStoria.Sample
 				FailCommand(command, "Transmission does not exist");
 				yield break;
 			}
-			yield return A(new TransmissionDeleted { TransmissionId = command.TransmissionId });
+			yield return For("channels").A(new TransmissionDeleted { TransmissionId = command.TransmissionId });
 		}
 	}
 }
