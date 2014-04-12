@@ -15,6 +15,8 @@ namespace EStoria.Services.Persistence.FileSystem
 		{
 			_basePath = basePath;
 			_fileCommitStrategy = fileCommitStrategy;
+			if(!Directory.Exists(basePath))
+				Directory.CreateDirectory(basePath);
 		}
 
 		public void Save(CommitInfo info, byte[] data)
