@@ -57,6 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CachedModelLoader.cs" />
+    <Compile Include="CacheExtensions.cs" />
     <Compile Include="DomainEventBuilder.cs" />
     <Compile Include="DomainEventSaver.cs" />
     <Compile Include="Interfaces\ICache.cs" />
