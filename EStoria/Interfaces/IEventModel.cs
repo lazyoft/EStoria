@@ -1,6 +1,6 @@
 using System;
 
-namespace EStoria
+namespace EStoria.Interfaces
 {
 	public interface IEventModel
 	{

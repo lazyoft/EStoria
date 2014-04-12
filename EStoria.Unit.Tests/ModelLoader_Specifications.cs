@@ -33,14 +33,14 @@ namespace EStoria.Unit.Tests
 		Because of = () => EventModel = Subject.Load<TestEventModel>("test");
 
 		It should_read_the_latest_snapshot = () => The<ISnapshotStore>().WasToldTo(store => store.Read("test", Int32.MaxValue)).OnlyOnce();
-		It should_read_the_events_from_the_store_for_that_id_starting_from_the_snapshot_serial = () => The<IEventStore>().WasToldTo(store => store.Read("test", 42)).OnlyOnce();
+		It should_read_the_events_from_the_store_starting_from_the_snapshot_serial = () => The<IEventStore>().WasToldTo(store => store.Read(null, 42)).OnlyOnce();
 		It should_return_the_model = () => EventModel.Should().NotBeNull();
 	}
 
 	[Subject(typeof(ModelLoader))]
 	public class When_the_model_read_from_the_snapshot_is_not_up_to_date : ModelLoaderSetup
 	{
-		Establish context = () => The<IEventStore>().WhenToldTo(store => store.Read("test", 42)).Return(AdditionalEvents);
+		Establish context = () => The<IEventStore>().WhenToldTo(store => store.Read(null, 42)).Return(AdditionalEvents);
 		Because of = () => EventModel = Subject.Load<TestEventModel>("test");
 		It should_apply_the_remaining_events_to_the_snapshot = () => EventModel.Model.Text.Should().Be("test with some data");
 	}
