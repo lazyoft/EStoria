@@ -7,7 +7,7 @@ namespace EStoria.Sample.Readmodels
 	{
 		readonly IDictionary<string, ScheduledTransmission> _transmissions = new Dictionary<string, ScheduledTransmission>();
 
-		protected IDictionary<string, ScheduledTransmission> Transmissions { get {  return _transmissions; } }
+		public IDictionary<string, ScheduledTransmission> Transmissions { get {  return _transmissions; } }
 
 		public ScheduledTransmission this[string index]
 		{
